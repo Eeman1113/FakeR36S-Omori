@@ -16,6 +16,8 @@ patches needed to compile for ARMv7 and a launcher that fits FakeR36S-OS.
 
 ## Install
 
+Full step by step, including building it yourself and reading the logs: **[INSTALL.md](INSTALL.md)**.
+
 1. Download `FakeR36S-Omori-*.zip` from [Releases](../../releases).
 2. Extract it at the **root of the card's HOME partition**, not inside `ports/`. The zip already
    contains the right folders, so afterwards you should have `ports/omori/run.sh`,
