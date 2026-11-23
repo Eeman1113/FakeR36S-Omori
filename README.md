@@ -17,7 +17,9 @@ patches needed to compile for ARMv7 and a launcher that fits FakeR36S-OS.
 ## Install
 
 1. Download `FakeR36S-Omori-*.zip` from [Releases](../../releases).
-2. Extract it into `ports/` on the card's **HOME** partition, so `ports/omori/run.sh` exists.
+2. Extract it at the **root of the card's HOME partition**, not inside `ports/`. The zip already
+   contains the right folders, so afterwards you should have `ports/omori/run.sh`,
+   `.local/share/applications/omori.puppy` and `.local/share/icons/omori.png`.
 3. Put your own game into `ports/omori/original/`:
    - **Android:** copy your `.apk` in. Keep your own copy, the launcher deletes the staged one
      after a successful extract.
