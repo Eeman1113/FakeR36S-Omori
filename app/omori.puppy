@@ -1,0 +1,9 @@
+# OMORI ReZig for FakeR36S-OS (github.com/Eeman1113/FakeR36S-Omori); build.sh fills in the version.
+# The first start prepares the game from the player's own OMORI APK or PC installation.
+[ENTRY]
+CATEGORY=Ports
+NAME=OMORI
+DESCRIPTION=ReZig engine, from your own copy: put the APK in ports/omori/original/
+COMMAND=/home/player/ports/omori/run.sh
+ICON=/home/player/.local/share/icons/omori.png
+VERSION=@VERSION@

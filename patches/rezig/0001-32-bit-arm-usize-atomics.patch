@@ -1,0 +1,35 @@
+diff --git a/runtime/src/core/log.zig b/runtime/src/core/log.zig
+index 74829d2..a0937b0 100644
+--- a/runtime/src/core/log.zig
++++ b/runtime/src/core/log.zig
+@@ -97,7 +97,7 @@ pub const ring_slots = 96;
+ pub const ring_line_max = 192;
+ 
+ const RingSlot = struct {
+-    seq: std.atomic.Value(u64) = std.atomic.Value(u64).init(0),
++    seq: std.atomic.Value(usize) = std.atomic.Value(usize).init(0),
+     len: usize = 0,
+     buf: [ring_line_max]u8 = undefined,
+ };
+@@ -115,7 +115,7 @@ const State = struct {
+     detailed: std.fs.File,
+     simple: std.fs.File,
+     start_mono_ns: i128,
+-    seq: std.atomic.Value(u64) = std.atomic.Value(u64).init(0),
++    seq: std.atomic.Value(usize) = std.atomic.Value(usize).init(0),
+     events_since_flush: usize = 0,
+     bytes_detailed: u64 = 0,
+     bytes_simple: u64 = 0,
+diff --git a/runtime/src/renderer/renderer.zig b/runtime/src/renderer/renderer.zig
+index 7df257b..21e6e1c 100644
+--- a/runtime/src/renderer/renderer.zig
++++ b/runtime/src/renderer/renderer.zig
+@@ -304,7 +304,7 @@ pub fn flushDestroyEnabled() bool {
+ /// the render loop stalls — the v28 failure mode (KMSDRM software present
+ /// blocking forever) must never require a hard power-off again.
+ const watchdog = struct {
+-    var heartbeat: std.atomic.Value(u64) = std.atomic.Value(u64).init(0);
++    var heartbeat: std.atomic.Value(usize) = std.atomic.Value(usize).init(0);
+     var running: std.atomic.Value(bool) = std.atomic.Value(bool).init(false);
+     var thread: ?std.Thread = null;
+ 

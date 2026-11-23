@@ -1,0 +1,13 @@
+diff --git a/runtime/src/core/crash.zig b/runtime/src/core/crash.zig
+index 7f9a3fb..6b1d4dc 100644
+--- a/runtime/src/core/crash.zig
++++ b/runtime/src/core/crash.zig
+@@ -225,7 +225,7 @@ fn putHex(v: u64) void {
+     var x = v;
+     while (x > 0) : (x >>= 4) {
+         i -= 1;
+-        tmp[i] = "0123456789abcdef"[x & 0xf];
++        tmp[i] = "0123456789abcdef"[@as(usize, @intCast(x & 0xf))];
+     }
+     put(tmp[0..]);
+ }
