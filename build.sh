@@ -22,7 +22,7 @@ for p in "$HERE"/patches/rezig/*.patch; do
 done
 
 echo "==> building omori-native for $TARGET ($CPU)"
-( cd "$WORK/rezig/runtime" && zig build -Dtarget="$TARGET" -Dcpu="$CPU" -Doptimize=ReleaseSafe )
+( cd "$WORK/rezig/runtime" && zig build -Dtarget="$TARGET" -Dcpu="$CPU" -Doptimize=ReleaseFast )
 
 file "$WORK/rezig/runtime/zig-out/bin/omori-native" | grep -q "ELF 32-bit.*ARM" \
     || { echo "!! not a 32-bit ARM binary"; exit 1; }
@@ -33,9 +33,11 @@ cp -r "$WORK/rezig/omori/." "$PORT/" 2>/dev/null || true
 cp "$WORK/rezig/OMORI.sh" "$PORT/"
 cp -r "$WORK/rezig/runtime" "$PORT/runtime-src" 2>/dev/null || true
 rm -rf "$PORT/runtime-src"
-mkdir -p "$PORT/runtime"
-cp "$WORK/rezig/runtime/zig-out/bin/omori-native" "$PORT/runtime/"
-"${STRIP:-arm-linux-gnueabihf-strip}" "$PORT/runtime/omori-native" 2>/dev/null || true
+# OMORI.sh looks for ${OMORI_DIR}/bin/omori-native, so it goes in bin/ beside the Python helpers
+mkdir -p "$PORT/bin"
+# zig objcopy strips cross-architecture, so no arm binutils needed on the builder
+zig objcopy --strip-all "$WORK/rezig/runtime/zig-out/bin/omori-native" "$PORT/bin/omori-native"
+chmod +x "$PORT/bin/omori-native"
 cp "$HERE/app/run.sh" "$PORT/run.sh"; chmod +x "$PORT/run.sh" "$PORT/OMORI.sh"
 sed "s/@VERSION@/$VERSION/" "$HERE/app/omori.puppy" > "$PORT/omori.puppy"
 mkdir -p "$PORT/original"
@@ -48,6 +50,8 @@ Put your own OMORI here, then open OMORI from the Ports menu.
 
 Nothing of the game ships with this port.
 TXT
+
+[ -x "$PORT/bin/omori-native" ] || { echo "!! bin/omori-native missing: OMORI.sh would not find it"; exit 1; }
 
 ( cd "$WORK/pkg" && zip -qr "$OUT/FakeR36S-Omori-$VERSION.zip" omori )
 echo "==> $OUT/FakeR36S-Omori-$VERSION.zip"
