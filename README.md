@@ -72,10 +72,24 @@ architecture on top of that, so treat it as something to test rather than to rel
 
 ## Credits
 
-- **José Pilas** for [OMORI ReZig](https://github.com/josepilas/OMORI-ReZig), the engine this is a
-  build of. MPL-2.0.
-- **OMOCAT and team** for OMORI. The game and its assets belong to their rights holders.
-- **CodeZombie and contributors** for [goodluckOS](https://github.com/CodeZombie/goodluckOS), the
-  base of FakeR36S-OS.
+**OMORI ReZig and the R36S port it builds on are by [José Pilas](https://github.com/josepilas).
+OMORI is by OMOCAT and team. Project-owned engine code is available under MPL 2.0. The game and its
+assets belong to their respective rights holders.**
 
-Engine code stays under **MPL-2.0**, as upstream.
+[Upstream licence](https://github.com/josepilas/OMORI-ReZig/blob/main/LICENSE) ·
+[Upstream third-party notices](https://github.com/josepilas/OMORI-ReZig/blob/main/docs/THIRD_PARTY.md)
+
+This repository contributes only the 32-bit ARM build and a FakeR36S-OS launcher. Every line of the
+engine is José Pilas's work, and the hard part (an RPG Maker runtime rewritten natively, which is
+the only reason this is possible on a 512 MB handheld) was done before this repo existed.
+
+- **[OMORI ReZig](https://github.com/josepilas/OMORI-ReZig)** by **José Pilas**: the engine. MPL-2.0.
+- **OMOCAT and team**: OMORI itself. No game data ships here, you supply your own copy.
+- **[goodluckOS](https://github.com/CodeZombie/goodluckOS)** by **CodeZombie** and contributors:
+  the base of FakeR36S-OS, including the reverse engineered display and gamepad drivers that make
+  this board run Linux at all.
+- The bundled `licenses/` folder carries the notices for SDL2, dr_mp3, dr_wav, LZString, PySDL2 and
+  the RPG Maker MV runtime, shipped unmodified from upstream.
+
+Engine code stays under **MPL-2.0**, as upstream. The two portability patches in `patches/` are
+offered back to the ReZig project.
