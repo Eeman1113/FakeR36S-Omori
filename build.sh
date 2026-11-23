@@ -35,8 +35,12 @@ cp -r "$WORK/rezig/runtime" "$PORT/runtime-src" 2>/dev/null || true
 rm -rf "$PORT/runtime-src"
 # OMORI.sh looks for ${OMORI_DIR}/bin/omori-native, so it goes in bin/ beside the Python helpers
 mkdir -p "$PORT/bin"
-# zig objcopy strips cross-architecture, so no arm binutils needed on the builder
-zig objcopy --strip-all "$WORK/rezig/runtime/zig-out/bin/omori-native" "$PORT/bin/omori-native"
+# Best effort strip: smaller binary means less to page in on a 512 MB board. Never fatal,
+# zig objcopy does not implement every mode for every target.
+SRC="$WORK/rezig/runtime/zig-out/bin/omori-native"
+zig objcopy --strip-debug "$SRC" "$PORT/bin/omori-native" 2>/dev/null \
+  || llvm-strip -o "$PORT/bin/omori-native" "$SRC" 2>/dev/null \
+  || { cp "$SRC" "$PORT/bin/omori-native"; echo "    (unstripped: no working strip for armhf here)"; }
 chmod +x "$PORT/bin/omori-native"
 cp "$HERE/app/run.sh" "$PORT/run.sh"; chmod +x "$PORT/run.sh" "$PORT/OMORI.sh"
 sed "s/@VERSION@/$VERSION/" "$HERE/app/omori.puppy" > "$PORT/omori.puppy"
